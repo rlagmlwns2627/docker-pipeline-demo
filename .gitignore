@@ -16,5 +16,3 @@ __pycache__/
 # dbt 자동 생성 파일
 dbt/target/
 dbt/.user.yml
-
-README.md
