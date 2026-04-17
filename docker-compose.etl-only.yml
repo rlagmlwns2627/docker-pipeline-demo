@@ -1,0 +1,18 @@
+version: "3.8"
+
+services:
+
+  etl:
+    build: .
+    container_name: my-etl-container
+    volumes:
+      - ./dataset:/app/dataset
+      - ./model:/app/model
+      - ./output:/app/output
+    environment:
+      - BASE_PATH=/app
+      - INPUT_PATH=/app/dataset
+      - OUTPUT_PATH=/app/output
+      - MODEL_PATH=/app/model/win_predictor.pkl
+      - MAPPING_PATH=/app/dataset/team_info.csv
+      - ENCODING=cp949

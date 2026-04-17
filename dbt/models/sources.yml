@@ -1,0 +1,10 @@
+version: 2
+
+sources:
+  - name: docker_test_db
+    # profiles.yml의 database 이름과 동일
+    database: docker_test_db
+    schema: docker_test_db
+    tables:
+      - name: game_result
+        # SQL 파일에서 source('docker_test_db', 'game_result')로 참조한 테이블

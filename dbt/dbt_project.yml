@@ -1,0 +1,13 @@
+name: practice
+version: 1.0.0
+
+profile: practice
+# profiles.yml에서 찾을 연결 설정 이름
+
+model-paths: ["models"]
+# SQL 모델 파일들이 있는 폴더 경로
+
+models:
+  practice:
+    materialized: table
+    # 모델 실행 시 뷰(view)가 아닌 실제 테이블로 생성

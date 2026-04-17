@@ -1,0 +1,14 @@
+practice:
+  target: dev
+  outputs:
+    dev:
+      type: mysql # 연결할 DB 종류
+
+      # docker-compose의 mysql 컨테이너 이름
+      server: "{{ env_var('DB_HOST') }}" # my-mysql
+
+      port: "{{ env_var('DB_PORT') | int }}"
+      database: "{{ env_var('DB_NAME') }}"
+      username: "{{ env_var('DB_USER') }}"
+      password: "{{ env_var('DB_PASSWORD') }}"
+      schema: "{{ env_var('DB_NAME') }}"
