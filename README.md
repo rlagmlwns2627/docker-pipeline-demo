@@ -10,7 +10,7 @@ Baseball game data pipeline — Crawler / ETL / dbt / MySQL, orchestrated with A
 
 ```
 Crawler → ETL → dbt → MySQL
-               ↑
+                   ↑
          Airflow (daily 09:00 KST)
 ```
 
