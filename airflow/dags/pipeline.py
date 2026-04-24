@@ -24,10 +24,10 @@ with DAG(
 ) as dag:
     crawler = DockerOperator(
         task_id="crawler",
-        image="baseball-crawler",
+        image="baseball-data-pipeline-demo-crawler",
         auto_remove=True,
         docker_url="unix://var/run/docker.sock",
-        network_mode="baseball_default",
+        network_mode="baseball-data-pipeline-demo_default",
         mount_tmp_dir=False,
         mounts=[
             Mount(
@@ -40,10 +40,10 @@ with DAG(
     )
     etl = DockerOperator(
         task_id="etl",
-        image="baseball-etl",
+        image="baseball-data-pipeline-demo-etl",
         auto_remove=True,
         docker_url="unix://var/run/docker.sock",
-        network_mode="baseball_default",
+        network_mode="baseball-data-pipeline-demo_default",
         mount_tmp_dir=False,
         mounts=[
             Mount(source=f"{BASE}/dataset", target="/app/dataset", type="bind"),
@@ -65,4 +65,27 @@ with DAG(
             "DB_PASSWORD":  os.getenv("DB_PASSWORD"),
         },
     )
-    crawler >> etl
+    dbt = DockerOperator(
+        task_id="dbt",
+        image="baseball-data-pipeline-demo-dbt",
+        auto_remove=True,
+        docker_url="unix://var/run/docker.sock",
+        network_mode="baseball-data-pipeline-demo_default",
+        mount_tmp_dir=False,
+        mounts=[
+            Mount(
+                source=f"{BASE}/dbt",
+                target="/usr/app/dbt",
+                type="bind",
+                # 로컬 dbt 폴더를 컨테이너와 연결
+            )
+        ],
+        environment={
+            "DB_HOST":     os.getenv("DB_HOST"),
+            "DB_PORT":     os.getenv("DB_PORT", "3306"),
+            "DB_NAME":     os.getenv("DB_NAME"),
+            "DB_USER":     os.getenv("DB_USER"),
+            "DB_PASSWORD": os.getenv("DB_PASSWORD"),
+        },
+    )
+    crawler >> etl >> dbt
